@@ -36,7 +36,7 @@ function plugin_info_get($alias = '')
     if(!plugin_userlevel($plugin['level'])) return null;
     $plugin['is_star'] = 0;
     if(request()->islogin){
-        $stars = explode(',', request()->user['stars']);
+        $stars = explode(',', request()->user['stars'] ?? '');
         if(in_array($plugin['id'], $stars)){
             $plugin['is_star'] = 1;
         }

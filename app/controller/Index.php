@@ -52,7 +52,7 @@ class Index extends Base
             if(empty($do) || empty($id)) return msg('error', 'param error');
             $plugin = Db::name('plugin')->where('id', $id)->where('enable',1)->find();
             if(!$plugin) return msg('error', '工具不存在');
-            $stars = explode(',',request()->user['stars']);
+            $stars = explode(',',request()->user['stars'] ?? '');
             if ($do == 'add' && !in_array($id, $stars)) {
                 array_push($stars, $id);
             } elseif ($do == 'del') {
@@ -72,8 +72,8 @@ class Index extends Base
         $category = Db::name('category')->cache('categorys', self::CACHE_TIME)->field('id,title,icon')->where('enable', 1)->order('weight','desc')->select();
         $list = [];
 
-        $stars = request()->user['stars'];
-        if(strlen($stars)>0){
+        $stars = request()->user['stars'] ?? '';
+        if(strlen($stars ?? '')>0){
             $stars = explode(',',$stars);
             $tool = Db::name('plugin')->cache('plugins', self::CACHE_TIME)->field('id,title,alias,keyword,request_count,category_id,level')->where('enable', 1)->order('weight','desc')->select();
             $list = [];
@@ -108,7 +108,7 @@ class Index extends Base
         $list = [];
 
         $history = cookie('tools');
-        if(strlen($history)>0){
+        if(strlen($history ?? '')>0){
             $history = array_reverse(array_unique(explode(',',$history)));
             $tool = Db::name('plugin')->cache('plugins', self::CACHE_TIME)->field('id,title,alias,keyword,request_count,category_id,level')->where('enable', 1)->order('weight','desc')->select();
             $newtool = [];
