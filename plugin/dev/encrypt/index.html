@@ -117,7 +117,7 @@
                 }
             },
             decrypt() {
-                if(this.set.input == '' || this.set.passphrase == '') return;
+                if(this.set.output == '' || this.set.passphrase == '') return;
                 try {
                     if(this.encrypt_type == 'SM4-ECB'){
                         var key = this.stringToHex(this.set.passphrase);
