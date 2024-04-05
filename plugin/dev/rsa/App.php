@@ -66,7 +66,9 @@ class App extends Plugin
         openssl_pkey_export($res, $privateKey, $this->passPhrase, $this->config);
         //  导出公钥
         $pubKey = openssl_pkey_get_details($res);
-        openssl_pkey_free($res);
+        if (PHP_VERSION_ID < 80000) {
+            openssl_pkey_free($res);
+        }
 
         return msg('ok', 'success', [
             "public_key" => $pubKey["key"],
