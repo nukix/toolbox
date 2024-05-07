@@ -474,3 +474,11 @@ function checkRefererHost(){
     if(strpos($http_host,':'))$http_host = substr($http_host, 0, strpos($http_host, ':'));
     return $url_arr['host'] === $http_host;
 }
+
+function getFullUrl() {
+    return request()->url(true);
+}
+
+function getHostUrl() {
+    return request()->domain();
+}

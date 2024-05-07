@@ -1,15 +1,37 @@
 <!DOCTYPE html>
 <html lang="zh" class="js">
+
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <meta name="author" content="nukix的工具箱">
+    <meta name="site" content="{:getHostUrl()}">
     <title>{block name="title"}标题{/block}</title>
-    <meta name="keywords" content="{:config_get('keywords')}">
+    <meta name="keywords" content="{$plugin.keyword}">
     <meta name="description" content="{:config_get('description')}">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{block name='title'}标题{/block}">
+    <meta property="og:url" content="{:getFullUrl()}">
+    <meta property="og:site_name" content="{block name='title'}标题{/block}">
+    <meta property="og:description" content="{:config_get('description')}">
+    <meta property="og:locale" content="zh">
+    <meta property="og:image" content="{:getHostUrl()}/static/images/logo.png">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{block name='title'}标题{/block}">
+    <meta name="twitter:description" content="{:config_get('description')}">
+    <meta name="twitter:image" content="{:getHostUrl()}/static/images/logo.png">
+    <link rel="canonical" href="{:getFullUrl()}" />
+
+    <link rel="shortcut icon" href="{:getHostUrl()}/favicon.ico" type="image/x-icon">
+
     <link rel="stylesheet" href="/static/css/dashlite.css">
-	<link rel="stylesheet" href="/static/css/style.css?v=1002">
+    <link rel="stylesheet" href="/static/css/style.css?v=1002">
     {block name="head"}{/block}
 </head>
+
 <body class="nk-body npc-invest bg-lighter {if cookie('darkmode')=='1'}dark-mode{/if}">
     <!-- wrap @s -->
     <div class="nk-wrap ">
@@ -34,26 +56,27 @@
         {include file="common/footer" /}
     </div>
     <!-- wrap @e -->
-<script src="{$cdn_cdnjs}jquery/3.6.0/jquery.min.js"></script>
-<script src="{$cdn_cdnjs}bootstrap/4.6.1/js/bootstrap.bundle.min.js"></script>
-<script src="{$cdn_cdnjs}layer/3.5.1/layer.js"></script>
-<script src="/static/js/nioapp.min.js"></script>
-<script src="/static/js/script.js"></script>
-<script src="/static/js/common.js"></script>
-<script>
-var plugin_id = {$plugin.id};
-var plugin_is_star = {$plugin.is_star};
-$("#star-btn-text").text(plugin_is_star?'取消收藏':'添加收藏');
-$(document).ready(function(){
-    $('.dark-switch').on("click", function(e) {
-        if ($("body.dark-mode").length <= 0) {
-            document.cookie='darkmode=1';
-        } else {
-            document.cookie='darkmode=0';
-        }
-    });
-})
-</script>
-{block name="script"}{/block}
+    <script src="{$cdn_cdnjs}jquery/3.6.0/jquery.min.js"></script>
+    <script src="{$cdn_cdnjs}bootstrap/4.6.1/js/bootstrap.bundle.min.js"></script>
+    <script src="{$cdn_cdnjs}layer/3.5.1/layer.js"></script>
+    <script src="/static/js/nioapp.min.js"></script>
+    <script src="/static/js/script.js"></script>
+    <script src="/static/js/common.js"></script>
+    <script>
+        var plugin_id = { $plugin.id };
+        var plugin_is_star = { $plugin.is_star };
+        $("#star-btn-text").text(plugin_is_star ? '取消收藏' : '添加收藏');
+        $(document).ready(function () {
+            $('.dark-switch').on("click", function (e) {
+                if ($("body.dark-mode").length <= 0) {
+                    document.cookie = 'darkmode=1';
+                } else {
+                    document.cookie = 'darkmode=0';
+                }
+            });
+        })
+    </script>
+    {block name="script"}{/block}
 </body>
+
 </html>
