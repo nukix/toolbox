@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh" class="js">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
@@ -9,19 +8,20 @@
     <title>{block name='title'}标题{/block}</title>
     <meta name="site" content="{:getHostUrl()}">
     <meta name="keywords" content="{$plugin.keyword}">
-    <meta name="description" content="{:config_get('description')}">
+    <!-- <meta name="description" content="{:config_get('description')}"> -->
+    <meta name="description" content="{$plugin.desc}">
     
     <meta property="og:type" content="website">
     <meta property="og:title" content="{block name='title'}标题{/block}">
     <meta property="og:url" content="{:getFullUrl()}">
     <meta property="og:site_name" content="{block name='title'}标题{/block}">
-    <meta property="og:description" content="{:config_get('description')}">
+    <meta property="og:description" content="{$plugin.desc}">
     <meta property="og:locale" content="zh">
     <meta property="og:image" content="{:getHostUrl()}/static/images/logo.png">
 
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{block name='title'}标题{/block}">
-    <meta name="twitter:description" content="{:config_get('description')}">
+    <meta name="twitter:description" content="{$plugin.desc}">
     <meta name="twitter:image" content="{:getHostUrl()}/static/images/logo.png">
     <link rel="canonical" href="{:getFullUrl()}" />
 

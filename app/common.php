@@ -29,6 +29,9 @@ function plugin_path_get($class = '')
     return realpath(app()->getRootPath() . "/plugin/$class");
 }
 
+/**
+ * 加载插件信息
+ */
 function plugin_info_get($alias = '')
 {
     $plugin = Db::name('plugin')->where('alias',$alias)->where('enable',1)->find();

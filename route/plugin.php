@@ -2,6 +2,9 @@
 
 use think\facade\Route;
 
+/**
+ * 根据插件和方法， 调用对应 API
+ */
 Route::rule('api/:alias/[:method]', function () {
     $alias = plugin_alias_get();
     $method = plugin_method_get();
@@ -26,9 +29,13 @@ Route::rule('api/:alias/[:method]', function () {
     ->middleware(\app\middleware\AuthUser::class)
     ->middleware(\app\middleware\RefererCheck::class);
 
+/**
+ * 根据插件和方法， 打开对应的页面
+ */
 Route::get(':alias/[:method]', function () {
     $alias = plugin_alias_get();
     $method = plugin_method_get();
+    // 读取插件信息
     $model = plugin_info_get($alias);
     if (!$model){
         abort(404, '页面不存在');
