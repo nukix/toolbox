@@ -5,10 +5,28 @@ namespace app\controller;
 use think\facade\Db;
 use think\facade\View;
 use think\facade\Validate;
+use think\facade\Request;
 
 class Index extends Base
 {
     const CACHE_TIME = 0;
+
+    /**
+     * 生成所有链接的 Html
+     */
+    private function generateToolHtml($tool) {
+        $line = "";
+        // 获取URL访问根地址 包含域名
+        $root = Request::root(true);
+
+        foreach($tool as $item) {
+            foreach($item['items'] as $items) {
+                $line += "<a href='" + $root + $items['url'] + "'>" + $items['title'] + "</a><br />";
+            }
+        }
+
+        return "<div style='display: none;'>" + $line + "</div>";
+    }
 
     public function index()
     {
@@ -30,6 +48,7 @@ class Index extends Base
             $list[] = ['id'=>$item['id'], 'title'=>$item['title'], 'icon'=>$item['icon'], 'items'=>$list2];
         }
 
+        View::assign('link_html', $this->generateToolHtml($list));
         View::assign('category', $category);
         View::assign('tool', $list);
         View::assign('link', $link);
@@ -89,6 +108,7 @@ class Index extends Base
             }
         }
 
+        View::assign('link_html', $this->generateToolHtml($list));
         View::assign('category', $category);
         View::assign('tool', $list);
         return view();
@@ -126,6 +146,7 @@ class Index extends Base
             }
         }
 
+        View::assign('link_html', $this->generateToolHtml($list));
         View::assign('category', $category);
         View::assign('tool', $list);
         return view();
