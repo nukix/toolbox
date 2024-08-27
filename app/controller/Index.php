@@ -21,11 +21,11 @@ class Index extends Base
 
         foreach($tool as $item) {
             foreach($item['items'] as $items) {
-                $line += "<a href='" + $root + $items['url'] + "'>" + $items['title'] + "</a><br />";
+                $line .= "<a href='".$root.$items['url']."'>".$items['title']."</a><br />";
             }
         }
 
-        return "<div style='display: none;'>" + $line + "</div>";
+        return "<div style='display: none;'>".$line."</div>";
     }
 
     public function index()
