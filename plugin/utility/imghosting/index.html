@@ -56,9 +56,7 @@ textarea.form-control{min-height: auto;}
             <h6><em class="icon ni ni-info"></em> 工具说明</h6>
             <div class="accordion-inner">
                 <p>文件格式支持：jpg,jpeg,png,gif,webp，大小不能超过10M</p>
-                <p>OPPO：图片域名store.heytapimage.com，原图无压缩</p>
-                <p>58同城：图片域名58cdn.com.cn，原图无压缩</p>
-                <p>大众点评：图片域名p1.meituan.net，原图无压缩</p>
+                <p>有的接口经常会失效，可更换另外的接口尝试</p>
             </div>
         </div>
     </div>
@@ -99,20 +97,16 @@ textarea.form-control{min-height: auto;}
         data: {
             apitypes: [
                 {
-                    title: '大众点评',
-                    key: 'dianping'
+                    title: 'Ucloud',
+                    key: 'ucloud'
                 },
                 {
-                    title: 'OPPO',
-                    key: 'oppo'
+                    title: '58同城',
+                    key: 'cdn58'
                 },
                 {
-                    title: 'VIPKID',
-                    key: 'vipkid'
-                },
-                {
-                    title: '简单图床',
-                    key: 'pngcm'
+                    title: 'LOCIMG',
+                    key: 'locimg'
                 },
                 {
                     title: 'IMGDD',
@@ -151,7 +145,7 @@ textarea.form-control{min-height: auto;}
                     ]
                 },
                 output: [],
-                apitype: 'dianping',
+                apitype: 'ucloud',
                 imgurl: ''
             },
             progress: 0,
