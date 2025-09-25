@@ -9,7 +9,7 @@ use think\helper\Str;
 class pngcm implements api
 {
     public function upload($filepath, $filename){
-        $url = 'https://png.cm/app/upload.php';
+        $url = 'https://img.wnflb2023.com/application/upload.php';
         $file = new \CURLFile($filepath);
         $file->setPostFilename($filename);
         $param = [
@@ -18,7 +18,7 @@ class pngcm implements api
             'sign' => time(),
             'file' => $file,
         ];
-        $data = get_curl($url,$param,'https://png.cm/');
+        $data = get_curl($url,$param,'https://img.wnflb2023.com/');
         $arr = json_decode($data,true);
         if(isset($arr['code']) && $arr['code']==200){
             return ['url'=>$arr['url']];

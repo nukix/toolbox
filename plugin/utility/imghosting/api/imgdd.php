@@ -8,7 +8,7 @@ use plugin\utility\imghosting\api;
 class imgdd implements api
 {
     public function upload($filepath, $filename){
-        $url = 'https://imgdd.com/api/v1/upload';
+        $url = 'https://imgdd.com/upload';
         $referer = 'https://imgdd.com/';
         $file = new \CURLFile($filepath);
         $file->setPostFilename($filename);

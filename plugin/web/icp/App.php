@@ -62,16 +62,38 @@ class App extends Plugin
     }
 
     private function queryapi($domain){
-        $url = config_get('qqapi_url').'api.php?act=icpquery';
-        $post = 'key='.config_get('qqapi_key').'&domain='.$domain;
-        $data = get_curl($url, $post);
-        $arr = json_decode($data, true);
-        if(isset($arr['code']) && $arr['code']==0){
-            return $arr['data'];
-        }elseif(isset($arr['msg'])){
-            throw new Exception($arr['msg']);
+        if(config_get('qqapi_url')){
+            $url = config_get('qqapi_url').'api.php?act=icpquery';
+            $post = 'key='.config_get('qqapi_key').'&domain='.$domain;
+            $data = get_curl($url, $post);
+            $arr = json_decode($data, true);
+            if(isset($arr['code']) && $arr['code']==0){
+                return $arr['data'];
+            }elseif(isset($arr['msg'])){
+                throw new Exception($arr['msg']);
+            }else{
+                throw new Exception('接口请求失败');
+            }
+        }elseif(config_get('yapi_token')){
+            $url = 'https://api.makuo.cc/api/get.other.icp?url='.urlencode($domain);
+            $header = ['Authorization: '.config_get('yapi_token')];
+            $data = get_curl($url, 0, 0, 0, 0, 0, 0, $header);
+            $arr = json_decode($data, true);
+            if(isset($arr['code']) && $arr['code']==200){
+                return [
+                    'Domain' => $arr['data']['domain'],
+                    'DomainIcpNum' => $arr['data']['icp'],
+                    'CompanyName' => $arr['data']['unitName'],
+                    'CompanyType' => $arr['data']['natureName'],
+                    'AuditTime' => $arr['data']['updateRecordTime'],
+                ];
+            }elseif(isset($arr['msg'])){
+                throw new Exception('接口请求失败,'.$arr['msg']);
+            }else{
+                throw new Exception('接口请求失败');
+            }
         }else{
-            throw new Exception('接口请求失败');
+            throw new Exception('请先配置API接口参数');
         }
     }
 
