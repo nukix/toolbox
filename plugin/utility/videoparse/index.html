@@ -28,10 +28,15 @@
                     <tbody>
                         <tr><td class="query-title">视频标题</td><td class="query-result">{{result_info.title}}</td></tr>
                         <tr v-show="result_info.desc"><td class="query-title">视频描述</td><td class="query-result">{{result_info.desc}}</td></tr>
-                        <tr v-show="result_info.author"><td class="query-title">视频作者</td><td class="query-result">{{result_info.author}}</tr>
+                        <tr v-show="result_info.author"><td class="query-title">视频作者</td><td class="query-result">{{result_info.author}} &nbsp; <a v-show="result_info.avatar" :href="result_info.avatar" target="_blank" rel="noreferrer"><em class="icon ni ni-img"></em></a></tr>
                         <tr v-show="result_info.time"><td class="query-title">发布时间</td><td class="query-result">{{result_info.time}}</td></tr>
                         <tr v-show="result_info.cover"><td class="query-title">视频封面</td><td class="query-result"><a :href="result_info.cover" class="btn btn-sm btn-outline-info" target="_blank" rel="noreferrer">点击查看</a> &nbsp; <a @click="copy(result_info.cover)" class="btn btn-sm btn-outline-warning" href="JavaScript:;">点此复制</a></td></tr>
-                        <tr><td class="query-title">视频链接</td><td class="query-result"><a :href="result_info.url" class="btn btn-sm btn-outline-info" target="_blank" rel="noreferrer">点击查看</a> &nbsp; <a @click="copy(result_info.url)" class="btn btn-sm btn-outline-warning" href="JavaScript:;">点此复制</a></td></tr>
+                        <tr v-show="result_info.url"><td class="query-title">视频链接</td><td class="query-result"><a :href="result_info.url" class="btn btn-sm btn-outline-info" target="_blank" rel="noreferrer">点击查看</a> &nbsp; <a @click="copy(result_info.url)" class="btn btn-sm btn-outline-warning" href="JavaScript:;">点此复制</a></td></tr>
+                        <tr v-show="result_info.images"><td class="query-title">图片链接</td><td class="query-result">
+                            <div v-for="(item, index) in result_info.images" :key="index" style="margin-bottom:5px;">
+                                <a :href="item" class="btn btn-sm btn-outline-info" target="_blank" rel="noreferrer">图片{{index+1}}查看</a> &nbsp; <a @click="copy(item)" class="btn btn-sm btn-outline-warning" href="JavaScript:;">点此复制</a>
+                            </div>
+                        </td></tr>
                     </tbody>
                 </table>
         </div>
@@ -40,7 +45,7 @@
         <div class="card-inner">
             <h6><em class="icon ni ni-info"></em> 工具说明</h6>
             <div class="accordion-inner">
-                <p>本工具可解析短视频去除水印的下载链接。<br/>目前已支持的视频平台：抖音、头条、西瓜、快手、微博、皮皮虾、小红书、微视、虎牙、秒拍、全民K歌、Acfun等</p>
+                <p>本工具可解析短视频去除水印的下载链接。<br/>已支持的视频平台：抖音、头条、快手、微博、小红书、微视、虎牙、全民K歌、Acfun等</p>
             </div>
         </div>
     </div>
