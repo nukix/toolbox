@@ -50,7 +50,7 @@ class XiaomiSport
             'device_id' => '2C8B4939-0CCD-4E94-8CBA-CB8EA6E613A1',
             'device_model' => 'android_phone',
             'grant_type' => 'access_token',
-            'third_name' => 'huami_phone',
+            'third_name' => 'huami',
             'dn' => 'account.zepp.com,api-user.zepp.com,api-mifit.zepp.com,api-watch.zepp.com,app-analytics.zepp.com,api-analytics.huami.com,auth.zepp.com',
             'source' => 'com.xiaomi.hm.health:6.14.0:50818',
             'lang' => 'zh',
