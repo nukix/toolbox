@@ -34,7 +34,7 @@
                         <input type="number" class="form-control" name="step" value="" placeholder="请输入要修改的步数" v-model="step" min="1" max="98000" required>
                     </div>
                 </div>
-                <div class="alert alert-info">每日步数最大98000，超过将无法增加</div>
+                <div class="alert alert-info">每日步数最大98000，超过将无法增加。若提示未绑定手环设备，可以<a href="javascript:" @click="bind_device">点此绑定虚拟手环</a>。</div>
                 <button class="btn btn-dim btn-outline-primary btn-block" @click="submit">
                     提交步数
                 </button>
@@ -104,6 +104,20 @@ new Vue({
                 step: that.step
             }, function(data){
                 layer.alert('提交步数成功！请稍后查看同步情况',{icon:1});
+            });
+        },
+        bind_device() {
+            var that = this;
+            if(that.userid == '' || that.token == ''){alert('请先登录');return;}
+            httpPost('/api/{$plugin.alias}/bind_device', {
+                userid: that.userid,
+                token: that.token
+            }, function(data){
+                if(data.code == 1){
+                    layer.alert('已绑定过设备！',{icon:1});
+                }else{
+                    layer.alert('绑定设备成功！',{icon:1});
+                }
             });
         },
         back(){

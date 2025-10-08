@@ -83,7 +83,9 @@ class XiaomiSport
 
         $response = $this->curl($url, $data, $token);
         $arr = json_decode($response['body'], true);
-        if(!$arr){
+        if($response['code'] == 401){
+            throw new Exception('Token已失效，请重新登录');
+        }elseif(!$arr){
             throw new Exception('修改步数接口请求失败');
         }elseif(isset($arr['code']) && $arr['code']==1){
             return true;
@@ -92,6 +94,95 @@ class XiaomiSport
         }
     }
 
+    private function getDeviceList($userid, $token){
+        $url = 'https://api-mifit-cn.huami.com/v1/device/lists.json';
+        $time = time();
+        $data = [
+            't' => $time,
+            'callid' => $time,
+            'userid' => $userid,
+            'device' => 'android_35',
+            'device_type' => 'android_phone',
+            'enableMultiDevice' => 'false',
+            'v' => '2.0',
+            'lang' => 'zh_CN',
+            'channel' => 'Normal',
+            'country' => 'CN',
+            'timezone' => 'Asia/Shanghai',
+            'cv' => '50813_6.14.0',
+        ];
+        $url .= '?'.http_build_query($data);
+        $response = $this->curl($url, null, $token);
+        $arr = json_decode($response['body'], true);
+        if($response['code'] == 401){
+            throw new Exception('Token已失效，请重新登录');
+        }elseif(!$arr){
+            throw new Exception('获取设备列表请求失败');
+        }elseif(isset($arr['code']) && $arr['code']==1){
+            return $arr['data'];
+        }else{
+            throw new Exception('获取设备列表失败'.(isset($arr['message'])?$arr['message']:$response['body']));
+        }
+    }
+
+    private function bindDeviceToAccount($userid, $token, $device_mac, $device_id){
+        $url = 'https://api-mifit-cn.huami.com/v1/device/binds.json';
+        $time = time();
+        $data = [
+            'app_time' => $time,
+            'code' => '0',
+            'activeStatus' => '0',
+            'bind_timezone' => '32',
+            'device_type' => '0',
+            'crcedUserId' => '0',
+            'userid' => $userid,
+            'device' => 'android_29',
+            'deviceid' => $device_id,
+            'enableMultiDevice' => 'true',
+            'mac' => $device_mac,
+            'productVersion' => '256',
+            'brandType' => '-1',
+            'productId' => '61', //小米手环 5 NFC版
+            'device_source' => '58',
+            'brand' => 'XiaoMi',
+            'fw_version' => 'V1.0.0.04',
+            'hardwareVersion' => 'V0.44.131.18',
+            'soft_version' => '6.13.1',
+            'sys_model' => 'Xiaomi 10 Pro',
+            'sys_version' => 'Android_35',
+            'v' => '2.0',
+            'lang' => 'zh_CN',
+            'channel' => 'Normal',
+            'country' => 'CN',
+            'timezone' => 'Asia/Shanghai',
+            'cv' => '50813_6.14.0',
+        ];
+        $response = $this->curl($url, $data, $token);
+        $arr = json_decode($response['body'], true);
+        if($response['code'] == 401){
+            throw new Exception('Token已失效，请重新登录');
+        }elseif(!$arr){
+            throw new Exception('绑定设备请求失败');
+        }elseif(isset($arr['code']) && $arr['code']==1){
+            return true;
+        }else{
+            throw new Exception('绑定设备失败'.(isset($arr['message'])?$arr['message']:$response['body']));
+        }
+    }
+
+    public function bind($userid, $token){
+        $list = $this->getDeviceList($userid, $token);
+        if(!empty($list)){
+            $device = $list[0];
+            return ['code'=>1, 'userid' => $userid, 'device_id' => $device['deviceid'], 'device_mac' => $device['mac']];
+        }
+        
+        $mac = strtoupper(substr(md5(uniqid(microtime(true),true)),0,12));
+        $mac = implode(':', str_split($mac, 2));
+        $device_id = substr(md5(uniqid(microtime(true),true)),0,16);
+        $this->bindDeviceToAccount($userid, $token, $mac, $device_id);
+        return ['code'=>0, 'userid' => $userid, 'device_id' => $device_id, 'device_mac' => $mac];
+    }
 
     private function curl($url, $data=null, $app_token=null, $ekv = false){
 		$ch=curl_init();
@@ -122,7 +213,9 @@ class XiaomiSport
         $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $header = substr($ret, 0, $headerSize);
         $body = substr($ret, $headerSize);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $ret = array();
+        $ret['code'] = $httpCode;
         $ret['header'] = $header;
         $ret['body'] = $body;
         curl_close($ch);

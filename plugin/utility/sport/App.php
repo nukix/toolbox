@@ -52,4 +52,18 @@ class App extends Plugin
         return msg();
     }
 
+    public function bind_device(){
+        $userid = input('post.userid');
+        $token = input('post.token');
+        if(!$userid || !$token) return msg('error','参数不能为空');
+
+        try{
+            $sport = new XiaomiSport();
+            $data = $sport->bind($userid, $token);
+            return msg('ok','success',$data);
+        }catch(Exception $e){
+            return msg('error',$e->getMessage());
+        }
+    }
+
 }
