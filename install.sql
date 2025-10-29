@@ -49,7 +49,7 @@ INSERT INTO `toolbox_config` (`key`, `value`) VALUES
 ('captcha_key', ''),
 ('ip_type', '0'),
 ('cdn_cdnjs', 'https://s4.zstatic.net/ajax/libs/'),
-('cdn_npm', 'https://unpkg.com/'),
+('cdn_npm', 'https://s4.zstatic.net/npm/'),
 ('description', '这是一个非常Nice的在线工具箱'),
 ('foot_code', ''),
 ('keywords', '彩虹工具网,源码查看器原创,在线,工具'),

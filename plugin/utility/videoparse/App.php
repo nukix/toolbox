@@ -17,36 +17,64 @@ class App extends Plugin
 
     public function query(){
         $video_url = input('post.video_url', null, 'trim');
-        if(!$video_url) return msg('error','视频链接不能为空');
+        if(!$video_url) return json(['code'=>-1, 'msg'=>'视频链接不能为空']);
+        
+        $apitype = $this->get_api_type($video_url);
+        if(!$apitype) return json(['code'=>-1, 'msg'=>'不支持该视频链接']);
 
-        try{
-            $result = $this->parse($video_url);
-            return json(['code'=>0, 'msg'=>'success', 'data'=>$result]);
-        }catch(\Exception $e){
-            return json(['code'=>-1, 'msg'=>$e->getMessage()]);
+        $classname = 'plugin\\utility\\videoparse\\api\\'.$apitype;
+        if(class_exists($classname)){
+            $instance = new $classname();
+            try{
+                $result = $instance->parse($video_url);
+                return json(['code'=>0, 'msg'=>'success', 'data'=>$result]);
+            }catch(\Exception $e){
+                return json(['code'=>-1, 'msg'=>$e->getMessage()]);
+            }
+        }else{
+            return json(['code'=>-1, 'msg'=>'该平台类型不存在']);
         }
+        
     }
 
-    public function parse($url){
-        $url = 'https://yuanxiapi.cn/api/jiexi_video/?url='.urlencode($url);
-        $data = get_curl($url);
-        $arr = json_decode($data, true);
-        if(isset($arr['code']) && $arr['code']==200){
-            if(isset($arr['video'])){
-                $resurl = $arr['video'];
-            }elseif(isset($arr['images'])){
-                $resurl = $arr['images'];
-            }else{
-                throw new \Exception('解析url返回异常');
-            }
-            return [
-                'title' => $arr['desc'],
-                'cover' => $arr['cover'],
-                'url' => $resurl,
-            ];
-        }else{
-            throw new \Exception('视频解析失败');
+    private function get_api_type($url){
+        if(strpos($url, 'kg.qq.com/') || preg_match('/kg(\d+).qq.com\//', $url)){
+            return 'qmkg';
         }
+        elseif(strpos($url, 'weishi.qq.com/')){
+            return 'weishi';
+        }
+        elseif(strpos($url, '.huya.com/')){
+            return 'huya';
+        }
+        elseif(strpos($url, '.acfun.cn/')){
+            return 'acfun';
+        }
+        elseif(strpos($url, '.douyin.com/')){
+            return 'douyin';
+        }
+        elseif(strpos($url, '.kuaishou.com/')){
+            return 'kuaishou';
+        }
+        elseif(strpos($url, '.xiaohongshu.com/') || strpos($url, 'xhslink.com/')){
+            return 'xiaohongshu';
+        }
+        elseif(strpos($url, 'toutiao.com/')){
+            return 'toutiao';
+        }
+        elseif(strpos($url, 'v.douyu.com/')){
+            return 'douyu';
+        }
+        elseif(strpos($url, 'weibo.com/') || strpos($url, 'weibo.cn/')){
+            return 'weibo';
+        }
+        elseif(strpos($url, 'pipix.com/')){
+            return 'pipixia';
+        }
+        elseif(strpos($url, 'izuiyou.com/') || strpos($url, 'xiaochuankeji.cn/')){
+            return 'zuiyou';
+        }
+        return false;
     }
 
 }
