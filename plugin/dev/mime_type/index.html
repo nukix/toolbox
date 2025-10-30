@@ -234,7 +234,6 @@
     function renderTable() {
         const leftTableBody = document.getElementById('mimeTableLeft');
         const rightTableBody = document.getElementById('mimeTableRight');
-        const totalCount = document.getElementById('totalCount');
 
         // 清空表格
         leftTableBody.innerHTML = '';
@@ -259,8 +258,6 @@
             }
         }
 
-        // 更新总数
-        totalCount.textContent = mimeData.length;
     }
 
     /**
