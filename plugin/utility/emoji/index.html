@@ -4613,6 +4613,10 @@
             emojiTableContainer.appendChild(fieldset);
         });
 
+        $('.fieldset li span').click(function (e) {
+            copy(this.innerText)
+            layer.msg('复制成功', { icon: 1, time: 600 })
+        })
     }
 
     /**
@@ -4662,10 +4666,7 @@
     }
 
 
-    $('.fieldset li span').click(function (e) {
-        copy(this.innerText)
-        layer.msg('复制成功', { icon: 1, time: 600 })
-    })
+
 
     let viewStatus = false
 
